@@ -9,7 +9,7 @@ COPY resume-ai-backend/src ./src
 RUN mvn clean package -DskipTests -B
 
 # ── Stage 2: Run ──
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
