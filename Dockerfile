@@ -1,20 +1,13 @@
-# ── Stage 1: Build ──
-FROM maven:3.9-eclipse-temurin-17 AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
-
 COPY resume-ai-backend/pom.xml .
 RUN mvn dependency:go-offline -B
-
 COPY resume-ai-backend/src ./src
 RUN mvn clean package -DskipTests -B
 
-# ── Stage 2: Run ──
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-
 COPY --from=build /app/target/*.jar app.jar
-
 ENV PORT=8080
 EXPOSE 8080
-
 ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT}"]
